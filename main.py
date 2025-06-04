@@ -207,6 +207,77 @@ assert x >= 0.0
 x = math.sqrt(x)
 print(x)
 
+from math import tan, radians
+angle = int(input("Enter the angle in degrees: "))
+#we must be sure that angle != 90 + k*180
+assert angle % 180 != 90
+print(tan(radians(angle)))
+
+#the code shows an extravagant way of leaving the loop
+list = [1, 2, 3, 4, 5]
+ix = 0
+doit = True
+while doit:
+    try:
+        print(list[ix])
+        ix += 1
+    except IndexError:
+        doit = False
+print("done")
+
+#pagina 47
+#this code cannot be terminated by pressing Ctrl-C
+from time import sleep
+seconds = 1
+while True:
+    try:
+        print(seconds)
+        seconds += 1
+        sleep(1)
+    except KeyboardInterrupt:
+        print("don't do that")
+
+
+#pagina 48
+#this code caouses the memoryerror exception
+#warning: executing this codemay be crucial for yours os
+#don't run it in production environments!
+
+string = "x"
+try:
+    while True:
+        string += string
+        print(len(string))
+except MemoryError:
+    print("this is not funny!")
+
+#the code print subsequent values of exp(k), k=1,2,4,8,16
+from math import exp
+ex = 1
+try:
+    while True:
+        print(exp(ex))
+        ex *= 2
+except OverflowError:
+    print("number is too big")
+
+#one of this imports will fail - which one?
+try:
+    import math
+    import time
+    import abracadabra
+except:
+    print("one of your imports has failed")
+
+#how to abuse the dictionary and how to deal with it
+dict = {'a' : 'b', 'b' : 'c', 'c' : 'd'}
+ch = 'a'
+try:
+    while True:
+        ch = dict[ch]
+        print(ch)
+except KeyError:
+    print("no such key: ", ch)
 
 
 
