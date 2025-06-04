@@ -59,5 +59,157 @@ if __name__ == "__main__":
 	print("This is the main module.")
 else:
 	print("This module is being imported.")
+
+#pagina 19
+counter = 0
+
+if __name__ == "__main__":
+    print("I prefer to be a module")
+else:
+    print("I loke to be a module")
+
+from module import __counter
+
+print(__counter)
+
+#pagina 28
+
+import math 
+x = float(input("Enter x: "))
+y = math.sqrt(x)
+print("square root of", x, "equals to: ", y)
+
+a = int(input("Enter a: "))
+b = int(input("Enter b: "))
+if b != 0:
+    print(a/b)
+else:
+    print("It cannot be done")
+print("THE END")
+
+a = int(input("Enter a: "))
+b = int(input("Enter b: "))
+try:
+    print(a/b)
+except:
+    print("It cannot be done")
+print("THE END")
+
+#pagina 33
+try:
+    print("1")
+    x = 1 / 0
+    print("2")
+except: #como no puede dividir por cero, se ejecuta el except
+    print("oh dear")
+print("3")
+
+#pagina 34
+try:
+    x = int(input())
+    y = 1 / x
+except:
+    print("oh dear, something went wrong!")
+print("THE END")
+
+#pagina 35
+try:
+    x = int(input())
+    y = 1 / x
+    print(y)
+except ZeroDivisionError:
+    print("oh dear, you cannot divide by zero!")
+except ValueError:
+    print("oh dear, you must enter a  integer number!")
+except:
+    print("oh dear, something went wrong!")
+print("tHE END")
+
+#pagina 36
+try:
+    x = int(input())
+    y = 1 / x
+    print(y)
+except ValueError:
+    print("oh dear, you must enter a  integer number!")
+except:
+    print("oh dear, something went wrong!")
+print("THE END")
+
+try:
+    x = int(input())
+    y = 1 / x
+    print(y)
+except ValueError:
+    print("oh dear, you must enter a  integer number!")
+print("THE END")
+
+# pagina 38
+try:
+    y = 1 / 0
+except ZeroDivisionError:
+    print("oh dear, you cannot divide by zero!")
+print("THE END")
+
+# pagina 39
+try:
+    y = 1 / 0
+except ArithmeticError:
+    print("arithmetic error")
+except ZeroDivisionError:
+    print("oh dear, you cannot divide by zero!")
+print("THE END")
+
+#pagina 40
+def badfun(n):
+    try:
+        return 1 / n
+    except ArithmeticError:
+        print("sorry for arithmetic error")
+    return None
+
+badfun(0)
+print("THE END")
+#pagina 41
+def badfun(n):
+    return 1 / n
+
+try:
+    badfun(0)
+except ArithmeticError:
+    print("what did you do")
+print("THE END")
+
+#pagina 42
+def badfun(n):
+    raise ZeroDivisionError
+
+try:
+    badfun(0)
+except ArithmeticError:
+    print("what did you do?")
+
+print("THE END")
+
+"#pagina 43"
+
+def badfun(n):
+    try:
+        return n/0
+    except ArithmeticError:
+        print("i see!")
+    print("THE END")
+
+#pagina 44
+import math
+x = float(input("Enter x: "))
+assert x >= 0.0
+x = math.sqrt(x)
+print(x)
+
+
+
+
+
 	
 
