@@ -279,6 +279,158 @@ try:
 except KeyError:
     print("no such key: ", ch)
 
+#pagina 55
+#muestra el largo de una cadena
+word = 'by'
+print(len(word))
+
+empty = ''
+print(len(empty))
+
+i_am = 'I / m'
+print(len(i_am))
+
+multi_line = '''line 1
+line 2'''
+print(len(multi_line))
+                             
+                          
+ #pagina 56 
+ 
+str1 = 'a'
+str2 = 'b'
+print(str1 + str2)  # Concatenation
+print(5 * str1)  # Repetition
+print(str2 * 4)
+
+#pagina 57 nature of strings -ascii
+
+c1 = 'a'
+c2 = 'b'
+print(ord(c1))  # ASCII value of 'a'
+print(ord(c2))  # ASCII value of 'b'
+print(chr(97))  # Character for ASCII value 97
+print(chr(945)) # Character for ASCII value 945 (Greek letter alpha)
+
+#pagina 58 
+#nature of strings -sequences
+string = 'silly walks'
+for ix in range(len(string)):
+    print(string[ix], end=' ')
+print()
+
+string = 'silly walks'
+for char in string:
+    print(char) #pregunta: porque guarda solo hasta dos valores el iterador?
+    print(char, end=' ')
+print()
+
+alphabet = 'abcdefghijklmnopqrstuvwxyz'
+print(alphabet[0])  # First character
+print(alphabet[25])  # Last character
+print(alphabet[1:3])  # Slice from index 1 to 2
+print(alphabet[1:])  # Slice from index 1 to the end
+print(alphabet[:3])  # Slice from the start to index 2
+print(alphabet[-1])  # Last character using negative index
+
+
+#pagina 59
+#nature of strings in / not in
+#with boolean checks
+text = 'abcdefghijklmnopqrstuvwxyz'
+print('f' in text)
+print('F' in text)  # Case-sensitive check
+print('1' in text)
+print('ghi' in text)
+print('Xyz' in text)
+
+print('a' not in text)
+print('A' not in text)
+print('1' not in text)
+  
+#pagina 60
+text = 'abcdefghijklmnopqrstuvwxyz'
+#del text[0]
+#text.append('z')
+#text.insert(0, 'a') 
+#ninguna de estas operaciones funciona con cadenas de texto
+
+#61 pagina
+#nature of strings
+
+text = 'abcdefghijklmnopqrstuvwxyz'
+text = "a" + text
+text = text + "z"
+print(text)  # Concatenation to add characters at the start and end
+print(min('aAbByYzZ')) # Minimum character based on ASCII value
+print(max('aAbByYzZ'))  # Maximum character based on ASCII value
+
+#pagina 62
+#nature of strings -min/max
+t = 'the Knights who say Ni!'
+print('[', min(t), ']')  # Minimum character
+t = [0, 1, 2]
+print(min(t))
+
+print('[', max(t), ']')  # Maximum character
+
+#pagina 63
+#nature of strings -index()
+
+print('aAbByYzZ'.index('b'))  # Index of first occurrence of 'a'
+
+#pagina 64
+
+print(list('abcabc'))
+print('abcabc'.count('b'))
+
+#pagina 66
+print('aBcD'.capitalize())
+
+print('Alpha'.capitalize())
+print('ALPHA.'.capitalize())
+print(' Alpha'.capitalize())
+
+print('['+'alpha'.center(10)+']')
+print('[' + 'Beta'.center(2) + ']')
+print('[' + 'Beta'.center(4) + ']')
+print('[' + 'Beta'.center(6) + ']')
+print('[' +'gamma'.center(20, '*') + ']')
+#pagina 68
+
+if 'epsilon'.endswith('on'):
+    print('yes')
+else:
+    print('no')
+
+t = 'zeta'
+print(t.endswith('a'))
+print(t.endswith('A'))
+print(t.endswith('et'))
+
+
+#pagina 69
+print('Eta'.find('ta'))
+
+t = 'theta'
+print(t.find('eta'))
+print(t.find('et'))
+print(t.find('the'))
+
+print('kappa'.find('a',2))
+
+txt = """A variation of the ordinary lorem ipsum
+text has been used in typesetting since the 1960s
+or earlier, when it was popularized by advertisements
+for Letraset transfer sheets. It is now used widely
+"""
+print(txt.find('ipsum'))  # Find 'ipsum' in the text
+
+print('kappa'.find('a',2,4)) # Find 'a' in 'kappa' from index 2 to 4
+
+
+
+
 
 
 
