@@ -428,7 +428,24 @@ print(txt.find('ipsum'))  # Find 'ipsum' in the text
 
 print('kappa'.find('a',2,4)) # Find 'a' in 'kappa' from index 2 to 4
 
+#pagina 73
+print("Imprimiendo cadenas de texto")
+print('Mu40'.isalpha()) #esta cadena no es alfanumérica
+print('2018'.isdigit()) #esta cadena es numérica
+print('nu'.islower()) #esta cadena es minúscula
+print('/n'.isspace()) #esta cadena no es un espacio en blanco
 
+#pagina74
+print(','.join(['omicron', 'pi', 'rho'])) #une los elementos de la lista con una coma
+
+#pagina 75
+print('SiGmA=60'.lower()) #convierte la cadena a minúsculas
+print('['+'tau'.lstrip() + ']') #quita los espacios a la izquierda
+print('www.cisco.com'.lstrip('w.')) #quita los caracteres 'w' y '.' a la izquierda
+
+#pagina 76
+print('this is it'.replace('is', 'are')) #reemplaza 'is' por 'are'
+print('this is it'.replace('is', 'are', 1)) #reemplaza solo la primera ocurrencia de 'is'
 
 
 
