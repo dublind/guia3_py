@@ -447,6 +447,66 @@ print('www.cisco.com'.lstrip('w.')) #quita los caracteres 'w' y '.' a la izquier
 print('this is it'.replace('is', 'are')) #reemplaza 'is' por 'are'
 print('this is it'.replace('is', 'are', 1)) #reemplaza solo la primera ocurrencia de 'is'
 
+#pagina 77
+print('tau tau tau'.rfind('ta')) #busca 'ta' desde el final de la cadena
+print('tau tau tau'.rfind('ta', 9)) #busca 'ta' desde el índice 9 hacia atrás
+print('tau tau tau'.rfind('ta',3, 9)) #busca 'ta' entre los índices 3 y 9
+
+#pagina 78
+print('phi chi/npsi'.split()) #por cada espacio dviide esta lista en split
+
+texto = 'phi chi/npsi'
+print(texto.split('/')) #divide la cadena en cada '/' y devuelve una lista
+
+#pagina 79
+print('omega'.startswith('mega')) #verifica si la cadena comienza con 'mega'
+
+print('['+'  aleph   '.strip()+']') #elimina los espacios al principio y al final de la cadena
+
+#pagina 80
+print('One thing I know, that I know nothing'.swapcase()) #cambia mayúsculas por minúsculas y viceversa
+
+print('One thing I know, that I know nothing'.title()) #pone en mayúscula la primera letra de cada palabra
+
+print('SiGmA=60'.upper()) #convierte toda la cadena a mayúsculas
+print('SiGmA=60'.lower()) #convierte toda la cadena a minúsculas
+
+#pagina 82
+'alpha' == 'alpha' #compara dos cadenas, devuelve True si son iguales
+'alpha' != 'beta' #compara dos cadenas, devuelve True si son diferentes
+'alpha' < 'beta' #compara dos cadenas, devuelve True si 'alpha' es menor que 'beta' en orden lexicográfico
+'alpha' > 'beta' #compara dos cadenas, devuelve True si 'alpha' es mayor que 'beta' en orden lexicográfico
+
+print("Parte numerica")
+print('10' == '010')
+print('10' > '010')
+print('10' > '8')
+print('20' < '8')
+print('20' < '80')
+
+#pagina 84
+Greek = ['omega', 'alpha', 'beta', 'gamma', 'delta']
+Greek2 = sorted(Greek) #ordena la lista alfabéticamente
+print(Greek2) #imprime la lista ordenada
+
+print(Greek)#imprime la lista original sin cambios
+print(Greek2)#imprime la lista ordenada
+
+#pagina 85
+#diferencia entre sorted() y sort()
+Greek = ['omega', 'alpha', 'beta', 'gamma', 'delta']
+print(Greek)
+Greek.sort()
+print(Greek)# ordena la lista en su lugar, modificando la lista original
+
+#pagina 86
+itg = 13
+flt = 1.3
+sf = str(flt)# convierte el número flotante a cadena
+print('si'+ ' ' + sf)# concatena la cadena 'si' con el número flotante convertido a 
+ 
+
+ 
 
 
 
