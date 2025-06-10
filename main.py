@@ -505,6 +505,61 @@ flt = 1.3
 sf = str(flt)# convierte el número flotante a cadena
 print('si'+ ' ' + sf)# concatena la cadena 'si' con el número flotante convertido a 
  
+#pagina 88
+text = input("Enter message: ")
+cipher = ' '
+for char in text:
+    if not char.isalpha(): # verifica si el carácter es una letra
+        continue
+    char = char.upper()
+    code = ord(char) + 1
+    if code > ord('Z'): # verifica si el código ASCII excede 'Z'
+        code = ord('A') # reinicia el código a 'A'
+        cipher += chr(code) # convierte el código ASCII a carácter
+print(cipher)
+
+#pagina 89
+cipher = input("Enter cryptogram: ")
+text = ' '
+for char in cipher:
+    if not char.isalpha():
+        continue
+    char = char.upper()
+    code = ord(char) - 1
+    if code < ord('A'): # verifica si el código ASCII es menor que 'A'
+        code = ord('Z') # reinicia el código a 'Z'
+        text += chr(code) # convierte el código ASCII a carácter
+    text += chr(code) # convierte el código ASCII a carácter
+print(text)
+
+ 
+ #pagina 90
+line = input("Enter line full of numbers - separate them with spaces: ")
+strings = line.split() # divide la línea en una lista de cadenas
+print(strings) # imprime la lista de cadenas
+
+#pagina 91
+iban = input("Enter IBAN: ")
+iban = iban.replace(' ', '') # elimina los espacios en blanco
+if not iban.isalnum(): # verifica si el IBAN contiene solo caracteres alfanuméricos
+    print("Invalid IBAN")
+elif len(iban) < 15:
+    print("iban too short")
+elif len(iban) > 31:
+    print("iban too long")
+else:
+    iban = (iban[4:] + iban[:4]).upper() # reordena el IBAN
+    iban2 = ''
+    for ch in iban:
+        if ch.isdigit():
+            iban2 += ch
+        else:
+            iban2 += str(10 + ord(ch) - ord('A')) # convierte letras a números
+        ibann = int(iban2)
+        if ibann % 97 == 1: # verifica la validez del IBAN
+            print("Valid IBAN")
+        else:
+            print("Invalid IBAN")
 
  
 
