@@ -1,66 +1,59 @@
-#20-05-2025 - 19:16
-#codigo huber
 import ast
-#-----------------------------
-#usuario
-nombre = " "
-segundo_nombre = " "
-apellido_p = " "
-apellido_m = " "
-usuario = {}
+import os
+
+# -----------------------------
+# usuario
+nombre = ""
+segundo_nombre = ""
+apellido_p = ""
+apellido_m = ""
+crear_usuario = {}
 clave = ""
 clave_confirmar = ""
 num_usuario = 0
-todos_num_usuario = {}
-crear_usuario = {
-    "nombre": nombre,
-    "segundo_nombre": segundo_nombre,
-    "apellido_p": apellido_p,
-    "apellido_m": apellido_m,
-    "clave": clave
-}
-#-----------------------------
-#variables generales
+todos_num_usuario = []
+# -----------------------------
+# variables generales
 haymasopciones = True
 intentos = 3
-opciones = " "
-resp = " "
+opciones = ""
+resp = ""
 contador = 0
-mes = " "
+mes = 0
 opcion = ""
 noesfindejornada = True
 dia = 0
-#-----------------------------
-#variables colaborador
-bar = " "
-clave_bar = " "
+# -----------------------------
+# variables colaborador
+bar = ""
+clave_bar = ""
 bar_1 = "Tomas"
 bar_2 = "Agustin"
 clave_bar1 = "1234"
 clave_bar2 = "5678"
-horario_1 = {}
-horario_2 = {}
-ver_horario = " "
+horario_1 = {}  # Cambiado a diccionario
+horario_2 = {}  # Cambiado a diccionario
+ver_horario = ""
 mod = ""
-mes = 0
 hora = 0
 nueva_hora = 0
 hora_real = 0
 cambio_hora = 0
-#-----------------------------
-#atencion al cliente
-correo = " "
-nombre_mail = " "
-#-----------------------------
-#tipo de pago
-rut = " "
+# -----------------------------
+# atencion al cliente
+correo = ""
+nombre_mail = ""
+# -----------------------------
+# tipo de pago
+rut = ""
 tipo_pago = 0
 tarjeta = 1
-efectovio = 2
+efectivo = 2
 guardar_boleta = []
 boleta = 1000
-#----------------------------
-#funciones
+# ----------------------------
+# funciones
+
 def print_horas():
     print("1- 9:00")
     print("2- 10:00")
@@ -72,36 +65,37 @@ def print_horas():
     print("8- 16:00")
     print("9- 17:00")
     print("10- 18:00")
-    print ("Seleccione su hora (entre 9:00 y 18:00 horas)")
+    print("Seleccione su hora (entre 9:00 y 18:00 horas)")
+
 def seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta):
     while True:
         print("Ingrese tipo de pago: ")
         print("1- Efectivo \n2- Tarjeta")
         tipo_pago = input()
         if tipo_pago == "1":
-            print(f"si deseas pagar con efectivo contactate con nosotros, en la opcion 5 ")
-            print(f"hasta luego {nombre}")
-            return False  # haymasopciones = False
+            print(f"Si deseas pagar con efectivo, contáctate con nosotros en la opción 5.")
+            print(f"Hasta luego {nombre}")
+            return False
         elif tipo_pago == "2":
-            print(f"perfecto, {nombre}")
+            print(f"Perfecto, {nombre}")
             boleta += 10
-            print(f"su boleta es: {boleta}")
+            print(f"Su boleta es: {boleta}")
             guardar_boleta.append([boleta, rut])
-            print("Gracias por su consulta!")
-            return False  # haymasopciones = False
+            print("¡Gracias por su consulta!")
+            return False
         else:
-            print("")
-            print("tipo de pago invalido, intente nuevamente")
-            print("1- Efectivo \n2- Tarjeta")
-#funciones de colaboradores
+            print("Tipo de pago inválido, intente nuevamente.")
+
 def mostrar_horario(horario):
     if not horario:
         print("No tienes horas agendadas.")
     else:
-        for key, value in horario.items():
-            mes, dia, hora = key
+        for clave, value in horario.items():
+            mes, dia, hora = clave
             print(f"Mes: {mes}, Día: {dia}, Hora: {hora}:00 → Nueva hora: {value}:00")
+
 def modificar_horario(horario):
+    mostrar_horario(horario)
     print("Ingrese el mes que desea modificar: ")
     mes = int(input())
     print("Ingrese el día a modificar: ")
@@ -117,24 +111,25 @@ def modificar_horario(horario):
         mostrar_horario(horario)
     else:
         print("La hora que quiere modificar no existe en su horario.")
+
 def flujo_colaborador(nombre_colab, clave_colab, horario):
     intentos = 3
     while True:
-        print(f"Ingreso de colaboradores ({bar_1}/{bar_2}) ")
+        print(f"Ingreso de colaboradores ({bar_1}/{bar_2}): ")
         bar = input()
         if bar == nombre_colab:
             print("Ingrese la clave: ")
             clave_bar = input()
             if clave_bar == clave_colab:
                 print(f"Bienvenido {nombre_colab}!")
-                print("Tu horario es de 9:00 a 18:00: ")
+                print("Tu horario es de 9:00 a 18:00.")
                 print("¿Quieres ver tus horas agendadas? (si/no)")
-                ver_horario = input()
+                ver_horario = input().lower()
                 if ver_horario == "si":
                     print("Estas son tus horas agendadas: ")
                     mostrar_horario(horario)
                     print("¿Quieres modificar tu horario? (si/no)")
-                    mod = input()
+                    mod = input().lower()
                     if mod == "si":
                         modificar_horario(horario)
                     elif mod == "no":
@@ -143,20 +138,26 @@ def flujo_colaborador(nombre_colab, clave_colab, horario):
                         print("Opción inválida, no se ha modificado el horario")
                 else:
                     print("Hasta luego!")
-                
+                break
             else:
                 intentos -= 1
                 if intentos == 0:
                     print("Se han agotado los intentos, vuelva a intentarlo más tarde")
-                    haymasopciones = False
+                    break
                 print(f"Le quedan {intentos} intentos")
-                print("Colaborador no registrado, intente nuevamente")
-                print("Clave incorrecta, intente nuevamente")
         else:
             print("Nombre de colaborador incorrecto")
-            haymasopciones = False
-#-----------------------------
+            break
+
+# -----------------------------
 print("Bienvenido!")
+
+# Cargar usuarios guardados si existen
+if os.path.exists("usuarios.txt"):
+    with open("usuarios.txt") as f:
+        content = f.read().strip()
+        if content:
+            crear_usuario = ast.literal_eval(content)
 
 while noesfindejornada:
     print("Ingrese la opcion deseada: ")
@@ -165,7 +166,7 @@ while noesfindejornada:
     print("3- Ingreso de colaboradores")
     print("4- Agenda")
     print("5- Atencion al cliente")
-    print("6- salir \n")
+    print("6- Salir\n")
     opcion = input()
 
     if opcion == "1":
@@ -181,11 +182,9 @@ while noesfindejornada:
             apellido_m = input()
             print("Ingrese rut: ")
             rut = input()
-
-            # Verifica que el rut no exista ya
             if rut in crear_usuario:
                 print("Ya existe un usuario registrado con ese rut.")
-                haymasopciones = False
+                break
             clave_confirmada = False
             while not clave_confirmada:
                 print("Crear clave: ")
@@ -197,7 +196,6 @@ while noesfindejornada:
                     clave_confirmada = True
                 else:
                     print("Las claves no coinciden, intente nuevamente")
-
             crear_usuario[rut] = {
                 "nombre": nombre,
                 "segundo_nombre": segundo_nombre,
@@ -210,6 +208,7 @@ while noesfindejornada:
                 file.write(str(crear_usuario))
             print("Usuarios guardados en usuarios.txt")
             haymasopciones = False
+
     elif opcion == "2":
         haymasopciones = True
         intentos = 3
@@ -218,412 +217,100 @@ while noesfindejornada:
             rut = input()
             print("Ingrese su clave: ")
             clave = input()
-            if len(crear_usuario) == 0:
+            if not crear_usuario:
                 print("No hay usuarios registrados, por favor registrese primero")
+                break
+            if rut in crear_usuario and clave == crear_usuario[rut]["clave"]:
+                num_usuario = num_usuario + 1
+                todos_num_usuario.append(num_usuario)
+                print("Bienvenido de nuevo!")
+                print(f"{crear_usuario[rut]['nombre']}, su número de usuario es: {num_usuario}")
                 haymasopciones = False
             else:
-                if rut in crear_usuario and clave == crear_usuario[rut]["clave"]:
-                    num_usuario = num_usuario + 1
-                    todos_num_usuario.append(num_usuario)
-                    print("Bienvenido de nuevo!")
-                    print("{} su numero de usuario es : {}".format(crear_usuario[rut]["nombre"], num_usuario))
+                print("Usuario o clave incorrecta, intente nuevamente")
+                intentos -= 1
+                if intentos == 0:
+                    print("Se han agotado los intentos, vuelva a intentarlo más tarde")
                     haymasopciones = False
                 else:
-                    print("Usuario o clave incorrecta, intente nuevamente")
-                    intentos -= 1
-                    if intentos == 0:
-                        print("Se han agotado los intentos, vuelva a intentarlo mas tarde")
-                        haymasopciones = False
-                    else:
-                        print("Le quedan {} intentos".format(intentos))
+                    print(f"Le quedan {intentos} intentos")
 
     elif opcion == "3":
-        haymasopciones = True
-        while haymasopciones:
-            flujo_colaborador(bar_1, clave_bar1, horario_1)
-            flujo_colaborador(bar_2, clave_bar2, horario_2)
+        flujo_colaborador(bar_1, clave_bar1, horario_1)
+        flujo_colaborador(bar_2, clave_bar2, horario_2)
+
     elif opcion == "4":
-        haymasopciones = True
-        while haymasopciones:
-            print("ingrese su numero de ususario: ")
-            num_usuario = int(input())
-            if num_usuario in todos_num_usuario:
-                print("Bienvenido a la agenda de horarios!. \n")
-                print("usuario {} desea agendar con Tomas o Agustin? (Tomas/Agustin)".format(num_usuario))
-                bar = input()
-                if bar == "Agustin":
-                    print("Agustin")
-                    print("Ingrese el mes en el cual desea agendar¨(entre 1 y 12): ")
-                    mes = int(input())
-                    if mes < 13 and mes > 0:
-                        if mes == 1 or mes == 3 or mes == 5 or mes == 7 or mes == 8 or mes == 10 or mes == 12:
-                            print("Ingrese el dia (entre 1 y 31): ")
-                            dia = int(input())
-                            if dia < 31 and dia > 0:
-                                print_horas()
-                                hora = int(input())
-                                if hora < 11 and hora > 0:
-                                    hora_real = (hora +8)
-                                    print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                    if  [dia, mes, hora_real] in horario_1:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                    else:
-                                        horario_1.append([dia, mes, hora_real])
-                                        seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-
-                                else:
-                                    while hora > 11 or hora < 0:
-                                        print("hora invalida, intente nuevamente")
-                                        hora = int(input())
-                                        if hora < 11 and hora > 0:
-                                            hora_real = (hora +8)
-                                            print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                            if  [dia, mes, hora_real] in horario_1:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                            else:
-                                                horario_1.append([dia, mes, hora_real])
-                                                print("Ingrese rut: ")
-                                                rut = input()
-                                                seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                            else:
-                                while dia > 31 or dia < 0:
-                                    print("dia invalido, intente nuevamente")
-                                    dia = int(input())
-                                    if dia < 31 and dia > 0:
-                                        print_horas()
-                                        hora = int(input())
-                                        if hora < 11 and hora > 0:
-                                            hora_real = (hora +8)
-                                            print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                            if  [dia, mes, hora_real] in horario_1:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                            else:
-                                                horario_1.append([dia, mes, hora_real])
-                                                print("Ingrese rut: ")
-                                                rut = input()
-                                                seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-
-                                        else :
-                                            while hora > 10 or hora < 0:
-                                                print("hora invalida, intente nuevamente")
-                                                hora = int(input())
-                                                if hora < 11 and hora > 0:
-                                                    hora_real = (hora +8)
-                                                    print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                                    if  [dia, mes, hora_real] in horario_1:
-                                                        print("la hora ya fue agendada, por favor intente nuevamente")
-                                                        haymasopciones = False
-                                                    else:
-                                                        horario_1.append([dia, mes, hora_real])
-                                                        print("Ingrese rut: ")
-                                                        rut = input()
-                                                        seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                        elif mes == 2:
-                            print("Ingrese el dia (entre 1 y 28): ")
-                            dia = int(input())
-                            if dia < 29 and dia > 0:
-                                print_horas()
-                                hora = int(input())
-                                if hora < 11 and hora > 0:
-                                    hora_real = (hora +8)
-                                    print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                    if  [dia, mes, hora_real] in horario_1:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                    else:
-                                        horario_1.append([dia, mes, hora_real])
-                                        print("Ingrese rut: ")
-                                        rut = input()
-                                        seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                                else:
-                                    while hora > 10 or hora < 0:
-                                        print("hora invalida, intente nuevamente")
-                                        hora = int(input())
-                                        if hora < 11 and hora > 0:
-                                            hora_real = (hora +8)
-                                            print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                            if  [dia, mes, hora_real] in horario_1:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                            else:
-                                                horario_1.append([dia, mes, hora_real])
-                                                print("Ingrese rut: ")
-                                                rut = input()
-                                                seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                            else:
-                                while dia > 29 or dia < 0:
-                                    print("dia invalido, intente nuevamente")
-                                    dia = int(input())
-                                    if dia < 29 and dia > 0:
-                                        print_horas()
-                                        hora = int(input())
-                                    if hora < 11 and hora > 0:
-                                        hora_real = (hora +8)
-                                        print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                        if  [dia, mes, hora_real] in horario_1:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                        else:
-                                            horario_1.append([dia, mes, hora_real])
-                                            print("Ingrese rut: ")
-                                            rut = input()
-                                            seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                        elif mes == 4 or mes == 6 or mes == 9 or mes == 11:
-                            print("Ingrese el dia (entre 1 y 30): ")
-                            dia = int(input())
-                            if dia < 31 and dia > 0:
-                                print_horas()
-                                hora = int(input())
-                                if hora < 11 and hora > 0:
-                                    hora_real = (hora +8)
-                                    print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                    if  [dia, mes, hora_real] in horario_1:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                    else:
-                                        horario_1.append([dia, mes, hora_real])
-                                        print("Ingrese rut: ")
-                                        rut = input()
-                                        seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                                else:
-                                    while hora > 10 or hora < 0:
-                                        print("hora invalida, intente nuevamente")
-                                        hora = int(input())
-                                        if hora < 11 and hora > 0:
-                                            hora_real = (hora +8)
-                                            print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                            if  [dia, mes, hora_real] in horario_1:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                            else:
-                                                horario_1.append([dia, mes, hora_real])
-                                                print("Ingrese rut: ")
-                                                rut = input()
-                                                seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                            else:
-                                while dia > 31 or dia < 0:
-                                    print("dia invalido, intente nuevamente")
-                                    dia = int(input())
-                                    if dia < 31 and dia > 0:
-                                        print_horas()
-                                        hora = int(input())
-                                    if hora < 11 and hora > 0:
-                                        hora_real = (hora +8)
-                                        print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                        if  [dia, mes, hora_real] in horario_1:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                        else:
-                                            horario_1.append([dia, mes, hora_real])
-                                            print("Ingrese rut: ")
-                                            rut = input()
-                                            seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                        else:
-                            print("mes invalido, intente nuevamente")
-                            mes = int(input())
-                elif bar == "Tomas":
-                    print("de Tomas")
-                    print("Agustin")
-                    print("Ingrese el mes en el cual desea agendar¨(entre 1 y 12): ")
-                    mes = int(input())
-                    if mes < 13 and mes > 0:
-                        if mes == 1 or mes == 3 or mes == 5 or mes == 7 or mes == 8 or mes == 10 or mes == 12:
-                            print("Ingrese el dia (entre 1 y 31): ")
-                            dia = int(input())
-                            if dia < 31 and dia > 0:
-                                print_horas()
-                                hora = int(input())
-                                if hora < 11 and hora > 0:
-                                    hora_real = (hora +8)
-                                    print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                    if  [dia, mes, hora_real] in horario_2:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                    else:
-                                        horario_2.append([dia, mes, hora_real])
-                                        rut = input()
-                                        seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                                else:
-                                    while hora > 11 or hora < 0:
-                                        print("hora invalida, intente nuevamente")
-                                        hora = int(input())
-                                        if hora < 11 and hora > 0:
-                                            hora_real = (hora +8)
-                                            print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                            if  [dia, mes, hora_real] in horario_2:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                            else:
-                                                horario_2.append([dia, mes, hora_real])
-                                                print("Ingrese rut: ")
-                                                rut = input()
-                                                seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                            else:
-                                while dia > 31 or dia < 0:
-                                    print("dia invalido, intente nuevamente")
-                                    dia = int(input())
-                                    if dia < 31 and dia > 0:
-                                        print_horas()
-                                        hora = int(input())
-                                        if hora < 11 and hora > 0:
-                                            hora_real = (hora +8)
-                                            print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                            if  [dia, mes, hora_real] in horario_2:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                            else:
-                                                horario_2.append([dia, mes, hora_real])
-                                                print("Ingrese rut: ")
-                                                rut = input()
-                                                seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                                        else :
-                                            while hora > 10 or hora < 0:
-                                                print("hora invalida, intente nuevamente")
-                                                hora = int(input())
-                                                if hora < 11 and hora > 0:
-                                                    hora_real = (hora +8)
-                                                    print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                                    if  [dia, mes, hora_real] in horario_2:
-                                                        print("la hora ya fue agendada, por favor intente nuevamente")
-                                                        haymasopciones = False
-                                                    else:
-                                                        horario_2.append([dia, mes, hora_real])
-                                                        print("Ingrese rut: ")
-                                                        rut = input()
-                                                        seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                        elif mes == 2:
-                            print("Ingrese el dia (entre 1 y 28): ")
-                            dia = int(input())
-                            if dia < 29 and dia > 0:
-                                print_horas()
-                                hora = int(input())
-                                if hora < 11 and hora > 0:
-                                    hora_real = (hora +8)
-                                    print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                    if  [dia, mes, hora_real] in horario_2:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                    else:
-                                        horario_2.append([dia, mes, hora_real])
-                                        seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                                else:
-                                    while hora > 10 or hora < 0:
-                                        print("hora invalida, intente nuevamente")
-                                        hora = int(input())
-                                        if hora < 11 and hora > 0:
-                                            hora_real = (hora +8)
-                                            print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                            if  [dia, mes, hora_real] in horario_2:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                            else:
-                                                horario_2.append([dia, mes, hora_real])
-                                                print("Ingrese rut: ")
-                                                rut = input()
-                                                seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                            else:
-                                while dia > 29 or dia < 0:
-                                    print("dia invalido, intente nuevamente")
-                                    dia = int(input())
-                                    if dia < 29 and dia > 0:
-                                        print_horas()
-                                        hora = int(input())
-                                    if hora < 11 and hora > 0:
-                                        hora_real = (hora +8)
-                                        print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                        if  [dia, mes, hora_real] in horario_2:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                        else:
-                                            horario_2.append([dia, mes, hora_real])
-                                            print("Ingrese rut: ")
-                                            rut = input()
-                                            seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                        elif mes == 4 or mes == 6 or mes == 9 or mes == 11:
-                            print("Ingrese el dia (entre 1 y 30): ")
-                            dia = int(input())
-                            if dia < 31 and dia > 0:
-                                print_horas()
-                                hora = int(input())
-                                if hora < 11 and hora > 0:
-                                    hora_real = (hora +8)
-                                    print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                    if  [dia, mes, hora_real] in horario_2:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                    else:
-                                            horario_2.append([dia, mes, hora_real])
-                                            print("Ingrese rut: ")
-                                            rut = input()
-                                            seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                                else:
-                                    while hora > 10 or hora < 0:
-                                        print("hora invalida, intente nuevamente")
-                                        hora = int(input())
-                                        if hora < 11 and hora > 0:
-                                            hora_real = (hora +8)
-                                            print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                            if  [dia, mes, hora_real] in horario_2:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                            else:
-                                                horario_2.append([dia, mes, hora_real])
-                                                print("Ingrese rut: ")
-                                                rut = input()
-                                                seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                            else:
-                                while dia > 31 or dia < 0:
-                                    print("dia invalido, intente nuevamente")
-                                    dia = int(input())
-                                    if dia < 31 and dia > 0:
-                                        print_horas()
-                                        hora = int(input())
-                                    if hora < 11 and hora > 0:
-                                        hora_real = (hora +8)
-                                        print("{} ,su hora agendada es: {}-{}-{} a las {}:00".format(nombre, dia, mes, 2025, hora_real))
-                                        if  [dia, mes, hora_real] in horario_2:
-                                                 print("la hora ya fue agendada, por favor intente nuevamente")
-                                                 haymasopciones = False
-                                        else:
-                                            horario_2.append([dia, mes, hora_real])
-                                            print("Ingrese rut: ")
-                                            rut = input()
-                                            seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
-                        else:
-                            print("mes invalido, intente nuevamente")
-                            mes = int(input())
+        if not todos_num_usuario:
+            print("Debe iniciar sesión primero.")
+            continue
+        print("Ingrese su número de usuario: ")
+        num_usuario = int(input())
+        if num_usuario in todos_num_usuario:
+            print("Bienvenido a la agenda de horarios!\n")
+            print(f"Usuario {num_usuario}, ¿desea agendar con Tomas o Agustin? (Tomas/Agustin)")
+            bar = input()
+            if bar == "Agustin":
+                horario = horario_1
+            elif bar == "Tomas":
+                horario = horario_2
             else:
-                print("Debe crear un usuario")
-                haymasopciones = False
+                print("Colaborador inválido.")
+                continue
+
+            print("Ingrese el mes en el cual desea agendar (entre 1 y 12): ")
+            mes = int(input())
+            if 1 <= mes <= 12:
+                if mes == 2:
+                    max_dia = 28
+                elif mes in [4, 6, 9, 11]:
+                    max_dia = 30
+                else:
+                    max_dia = 31
+                print(f"Ingrese el día (entre 1 y {max_dia}): ")
+                dia = int(input())
+                if 1 <= dia <= max_dia:
+                    print_horas()
+                    hora = int(input())
+                    if 1 <= hora <= 10:
+                        hora_real = hora + 8
+                        print(f"{nombre}, su hora agendada es: {dia}-{mes}-2025 a las {hora_real}:00")
+                        clave_horario = (mes, dia, hora_real)
+                        if clave_horario in horario:
+                            print("La hora ya fue agendada, por favor intente nuevamente.")
+                        else:
+                            horario[clave_horario] = hora_real
+                            print("Ingrese rut: ")
+                            rut = input()
+                            seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta)
+                    else:
+                        print("Hora inválida.")
+                else:
+                    print("Día inválido.")
+            else:
+                print("Mes inválido.")
+        else:
+            print("Debe iniciar sesión primero.")
 
     elif opcion == "5":
-        haymasopciones = True
-        while haymasopciones:
-            print("Ingrese su correo:")
-            correo = input()
-            print("Ingrese su nombre:")
-            nombre_mail = input()
-            print("Nos contactaremos muy pronto con usted {}".format(nombre_mail))
-            print("Gracias por su consulta!")
-            haymasopciones = False
+        print("Ingrese su correo:")
+        correo = input()
+        print("Ingrese su nombre:")
+        nombre_mail = input()
+        print(f"Nos contactaremos muy pronto con usted {nombre_mail}")
+        print("¡Gracias por su consulta!")
+
     elif opcion == "6":
         noesfindejornada = False
-        print ("Hasta pronto!")
+        print("Hasta pronto!")
     else:
-        haymasopciones = True
-        while haymasopciones:
-            print("\nOpcion invalida intente nuevamente \n")
-            haymasopciones = False
+        print("\nOpción inválida, intente nuevamente\n")
 
 print("Las boletas generadas son: ")
 for i in guardar_boleta:
     print(i)
-print("Las horas agendadas son: ")
-for i in horario_1:
-    print(i)
-print("Las horas agendadas son: ")
-for i in horario_2:
-    print(i)
+print("Las horas agendadas con Agustin son: ")
+for k, v in horario_1.items():
+    print(f"Mes: {k[0]}, Día: {k[1]}, Hora: {k[2]} → Nueva hora: {v}")
+print("Las horas agendadas con Tomas son: ")
+for k, v in horario_2.items():
+    print(f"Mes: {k[0]}, Día: {k[1]}, Hora: {k[2]} → Nueva hora: {v}")
