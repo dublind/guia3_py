@@ -114,7 +114,7 @@ def modificar_horario(horario):
 def flujo_colaborador(nombre_colab, clave_colab, horario):
     intentos = 3
     while True:
-        print("Ingreso de colaboradores ({}/{})".format(bar_1, bar_2))
+        print("Ingreso de colaboradores ({}/{}), si desea volver al menu apriete enter".format(bar_1, bar_2))
         bar = input()
         if bar == nombre_colab:
             print("Ingrese la clave: ")
@@ -133,20 +133,22 @@ def flujo_colaborador(nombre_colab, clave_colab, horario):
                         modificar_horario(horario)
                     elif mod == "no":
                         print("No se ha modificado el horario")
+                        
                     else:
                         print("Opción inválida, no se ha modificado el horario")
+                        return False
                 else:
                     print("Hasta luego!")
-                break
+                    return False
             else:
                 intentos -= 1
                 if intentos == 0:
                     print("Se han agotado los intentos, vuelva a intentarlo más tarde")
-                    break
+                    haymasopciones = False
                 print("Le quedan {} intentos".format(intentos))
         else:
             print("Nombre de colaborador incorrecto")
-            break
+            haymasopciones = False
 
 # -----------------------------
 print("Bienvenido!")
@@ -160,7 +162,11 @@ if os.path.exists("usuarios.txt"):
             if line.strip():
                 try:
                     rut, datos = line.strip().split(":", 1)
-                    crear_usuario[rut.strip()] = ast.literal_eval(datos.strip())
+                    usuario_dict = ast.literal_eval(datos.strip())
+                    # Asegura que todos tengan 'num_usuario'
+                    if "num_usuario" not in usuario_dict:
+                        usuario_dict["num_usuario"] = len(crear_usuario) + 1
+                    crear_usuario[rut.strip()] = usuario_dict
                 except Exception as e:
                     print("Error al leer usuario en línea: {}\nError específico: {}".format(line.strip(), e))
 
@@ -172,6 +178,7 @@ while noesfindejornada:
     print("4- Agenda")
     print("5- Atencion al cliente")
     print("6- Salir\n")
+    print("Ingrese: ")
     opcion = input()
 
     if opcion == "1":
@@ -189,7 +196,7 @@ while noesfindejornada:
             rut = input().strip()
             if rut in crear_usuario:
                 print("Ya existe un usuario registrado con ese rut.")
-                break
+                haymasopciones = False
             clave_confirmada = False
             while not clave_confirmada:
                 print("Crear clave: ")
