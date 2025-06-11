@@ -38,8 +38,8 @@ bar_1 = "Tomas"
 bar_2 = "Agustin"
 clave_bar1 = "1234"
 clave_bar2 = "5678"
-horario_1 = 
-horario_2 = []
+horario_1 = {}
+horario_2 = {}
 ver_horario = " "
 mod = ""
 mes = 0
@@ -93,7 +93,68 @@ def seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta):
             print("")
             print("tipo de pago invalido, intente nuevamente")
             print("1- Efectivo \n2- Tarjeta")
-
+#funciones de colaboradores
+def mostrar_horario(horario):
+    if not horario:
+        print("No tienes horas agendadas.")
+    else:
+        for key, value in horario.items():
+            mes, dia, hora = key
+            print(f"Mes: {mes}, Día: {dia}, Hora: {hora}:00 → Nueva hora: {value}:00")
+def modificar_horario(horario):
+    print("Ingrese el mes que desea modificar: ")
+    mes = int(input())
+    print("Ingrese el día a modificar: ")
+    dia = int(input())
+    print("Ingrese la hora que desea modificar: ")
+    hora = int(input())
+    clave = (mes, dia, hora)
+    if clave in horario:
+        print("Ingrese la nueva hora: ")
+        nueva_hora = int(input())
+        horario[clave] = nueva_hora
+        print("Horario modificado con éxito!")
+        mostrar_horario(horario)
+    else:
+        print("La hora que quiere modificar no existe en su horario.")
+def flujo_colaborador(nombre_colab, clave_colab, horario):
+    intentos = 3
+    while True:
+        print(f"Ingreso de colaboradores ({bar_1}/{bar_2}) ")
+        bar = input()
+        if bar == nombre_colab:
+            print("Ingrese la clave: ")
+            clave_bar = input()
+            if clave_bar == clave_colab:
+                print(f"Bienvenido {nombre_colab}!")
+                print("Tu horario es de 9:00 a 18:00: ")
+                print("¿Quieres ver tus horas agendadas? (si/no)")
+                ver_horario = input()
+                if ver_horario == "si":
+                    print("Estas son tus horas agendadas: ")
+                    mostrar_horario(horario)
+                    print("¿Quieres modificar tu horario? (si/no)")
+                    mod = input()
+                    if mod == "si":
+                        modificar_horario(horario)
+                    elif mod == "no":
+                        print("No se ha modificado el horario")
+                    else:
+                        print("Opción inválida, no se ha modificado el horario")
+                else:
+                    print("Hasta luego!")
+                
+            else:
+                intentos -= 1
+                if intentos == 0:
+                    print("Se han agotado los intentos, vuelva a intentarlo más tarde")
+                    haymasopciones = False
+                print(f"Le quedan {intentos} intentos")
+                print("Colaborador no registrado, intente nuevamente")
+                print("Clave incorrecta, intente nuevamente")
+        else:
+            print("Nombre de colaborador incorrecto")
+            haymasopciones = False
 #-----------------------------
 print("Bienvenido!")
 
@@ -179,105 +240,8 @@ while noesfindejornada:
     elif opcion == "3":
         haymasopciones = True
         while haymasopciones:
-            print("Ingreso de colaboradores (Tomas/Agustin) ")
-            bar = input()
-            if bar == bar_1:
-                print("Ingrese la clave: ")
-                clave_bar = input()
-                if clave_bar == clave_bar1:
-                    print("Bienvenido Tomas!")
-                    print("Tu horario es de 9:00 a 18:00: ")
-                    print("Quieres ver tu horas agendadas? (si/no)")
-                    ver_horario = input()
-                    if ver_horario == "si":
-                        print("Estas son tus horas agendadas: ")
-                        print(horario_1)
-                        print("Quieres modificar tu horario? (si/no)")
-                        mod = input()
-                        if mod == "si":
-                            print("Ingrese el mes que desea modificar: ")
-                            mes = int(input())
-                            print ("ingrese el dia a modificar")
-                            dia = int(input())
-                            print("Ingrese la hora que desea modificar: ")
-                            hora = int(input())
-                            for i in range(len(horario_1)):
-                                if horario_1[i][1] == mes and horario_1[i][0] == dia and horario_1[i][2] == hora:
-                                    horario_1.remove(horario_1[i])
-                                    print("Ingrese la nueva hora: ")
-                                    cambio_hora = int(input())
-                                    horario_1.append([mes, dia, cambio_hora])
-                                    print("Horario modificado con exito!")
-                                    print("Estas son tus horas agendadas: ")
-                                    print(horario_1)
-                                else: print ("la hora que quiere modificar no existe en su horario.")
-                                haymasopciones = False
-                        elif mod == "no":
-                            print("No se ha modificado el horario")
-                            haymasopciones = False
-                        else:
-                            print("Opcion invalida, no se ha modificado el horario")
-                            haymasopciones = False
-                    else:
-                        print("Hasta luego!")
-                        haymasopciones = False
-                else:
-                    intentos -= 1
-                    if intentos == 0:
-                        print("Se han agotado los intentos, vuelva a intentarlo mas tarde")
-                        haymasopciones = False
-                    print("Le quedan {} intentos".format(intentos))
-                    print("Colaborador no registrado, intente nuevamente")
-                    print("Clave incorrecta, intente nuevamente")
-
-            elif bar == bar_2:
-                print("Ingrese la clave: ")
-                clave_bar = input()
-                if clave_bar == clave_bar2:
-                    print("Bienvenido Agustin!")
-                    print("Tu horario es de 9:00 a 18:00: ")
-                    print("Quieres ver tu horas agendadas? (si/no)")
-                    ver_horario = input()
-                    if ver_horario == "si":
-                        print("Estas son tus horas agendadas: ")
-                        print(horario_2)
-                        print("Quieres modificar tu horario? (si/no)")
-                        mod = input()
-                        if mod == "si":
-                            print("Ingrese el mes que desea modificar: ")
-                            mes = int(input())
-                            print ("ingrese el dia a modificar")
-                            dia = int(input())
-                            print("Ingrese la hora que desea modificar: ")
-                            hora = int(input())
-                            for i in range(len(horario_2)):
-                                if horario_2[i][1] == mes and horario_2[i][0] == dia and horario_2[i][2] == hora:
-                                    horario_2.remove(horario_2[i])
-                                    print("Ingrese la nueva hora: ")
-                                    cambio_hora = int(input())
-                                    horario_2.append([mes, dia, cambio_hora])
-                                    print("Horario modificado con exito!")
-                                    print("Estas son tus nuevas horas agendadas: ")
-                                    print(horario_2)
-                                else: print ("la hora que quiere modificar no existe en su horario.")
-                                haymasopciones = False
-                        elif mod == "no":
-                            print("No se ha modificado el horario")
-                            haymasopciones = False
-                        else:
-                            print("Opcion invalida, no se ha modificado el horario")
-                            haymasopciones = False
-                    else:
-                        print("Hasta luego!")
-                        haymasopciones = False
-                else:
-                    intentos -= 1
-                    if intentos == 0:
-                        print("Se han agotado los intentos, vuelva a intentarlo mas tarde")
-                        haymasopciones = False
-                    print("Le quedan {} intentos".format(intentos))
-                    print("Colaborador no registrado, intente nuevamente")
-                    print("Clave incorrecta, intente nuevamente")
+            flujo_colaborador(bar_1, clave_bar1, horario_1)
+            flujo_colaborador(bar_2, clave_bar2, horario_2)
     elif opcion == "4":
         haymasopciones = True
         while haymasopciones:
