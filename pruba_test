@@ -84,6 +84,9 @@ def seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta):
                 "nombre": nombre,
                 "boleta": boleta
             }
+            # Guardar información del pago en pagos.txt
+            with open("pagos.txt", "a") as f:
+                f.write(f"Rut: {rut} | Nombre: {nombre} | Boleta: {boleta} | Tipo de pago: Tarjeta\n")
             print("¡Gracias por su consulta!")
             return False
         else:
@@ -117,28 +120,46 @@ def modificar_horario(horario):
 
 def flujo_colaborador(nombre_colab, clave_colab, horario):
     intentos = 3
+    global bar  # Asegúrate de que 'bar' está disponible en el scope global
     while True:
         if bar == nombre_colab:
             print("Ingrese la clave: ")
             clave_bar = input()
             if clave_bar == clave_colab:
-                print("Bienvenido {}!".format(nombre_colab))
+                print(f"Bienvenido {nombre_colab}!")
                 print("Tu horario es de 9:00 a 18:00.")
                 print("¿Quieres ver tus horas agendadas? (si/no)")
                 ver_horario = input().lower()
                 if ver_horario == "si":
-                    print("Estas son tus horas agendadas: ")
-                    mostrar_horario(horario)
-                    print("¿Quieres modificar tu horario? (si/no)")
-                    mod = input().lower()
-                    if mod == "si":
-                        modificar_horario(horario)
-                    elif mod == "no":
-                        print("No se ha modificado el horario")
-                        return False     
-                    else:
-                        print("Opción inválida, no se ha modificado el horario")
+                    if not horario:
+                        print("No tienes horas agendadas.")
+                        print("No hay horario para modificar.")
                         return False
+                    else:
+                        print("Estas son tus horas agendadas:")
+                        mostrar_horario(horario)
+                        # Guardar en agenda.txt
+                        with open("agenda.txt", "a") as f:
+                            for clave, value in horario.items():
+                                mes, dia, hora = clave
+                                f.write(f"Colaborador: {nombre_colab} | Fecha: {dia}-{mes}-2025 | Hora: {hora}:00\n")
+                        print("¿Quieres modificar tu horario? (si/no)")
+                        mod = input().lower()
+                        if mod == "si":
+                            modificar_horario(horario)
+                            # Guardar cambios en agenda.txt después de modificar
+                            with open("agenda.txt", "a") as f:
+                                for clave, value in horario.items():
+                                    mes, dia, hora = clave
+                                    f.write(f"Colaborador: {nombre_colab} | Fecha: {dia}-{mes}-2025 | Hora: {hora}:00\n")
+                            print("Horario actualizado guardado en agenda.txt")
+                            return False
+                        elif mod == "no":
+                            print("No se ha modificado el horario")
+                            return False
+                        else:
+                            print("Opción inválida, no se ha modificado el horario")
+                            return False
                 else:
                     print("Hasta luego!")
                     return False
@@ -146,11 +167,11 @@ def flujo_colaborador(nombre_colab, clave_colab, horario):
                 intentos -= 1
                 if intentos == 0:
                     print("Se han agotado los intentos, vuelva a intentarlo más tarde")
-                    haymasopciones = False
-                print("Le quedan {} intentos".format(intentos))
+                else:
+                    print(f"Le quedan {intentos} intentos")
         else:
             print("Nombre de colaborador incorrecto")
-            haymasopciones = False
+            return False
 
 # -----------------------------
 print("Bienvenido!")
@@ -294,10 +315,13 @@ while noesfindejornada:
                             print("{} su hora agendada es: {}-{}-2025 a las {}:00".format(crear_usuario[rut]['nombre'], dia, mes, hora_real))
                             clave_horario = (mes, dia, hora_real)
                             if clave_horario in horario:
-                                print("La hora ya fue agendada, por favor intente nuevamente.")
+                                print("La hora ya fue agendada, por favor intente nuevamente con otra hora.")
                             else:
                                 horario[clave_horario] = hora_real
-                                print("Ingrese rut: ")
+                                with open("agenda.txt", "a") as f:
+                                    f.write(
+                                        f"Usuario: {crear_usuario[rut]['nombre']} | Rut: {rut} | Colaborador: {bar} | Fecha: {dia}-{mes}-2025 | Hora: {hora_real}:00\n")
+                                print("Ingrese rut para la boleta: ")
                                 rut_boleta = input()
                                 seleccionar_tipo_pago(crear_usuario[rut]['nombre'], boleta, rut_boleta, guardar_boleta)
                         else:
@@ -307,7 +331,7 @@ while noesfindejornada:
                 else:
                     print("Mes inválido.")
             else:
-                print("Debe iniciar sesión primero.")
+                print("Debe iniciar sesión primero: ")
                 haymasopciones = False
 
     elif opcion == "5":
@@ -315,8 +339,12 @@ while noesfindejornada:
         correo = input()
         print("Ingrese su nombre:")
         nombre_mail = input()
+        # Guardar en archivo
+        with open("atencion_cliente.txt", "a") as f:
+            f.write(f"Correo: {correo} | Nombre: {nombre_mail}\n")
         print("Nos contactaremos muy pronto con usted {}".format(nombre_mail))
         print("¡Gracias por su consulta!")
+
 
     elif opcion == "6":
         noesfindejornada = False
