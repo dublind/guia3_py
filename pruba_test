@@ -1,57 +1,6 @@
 import ast
 import os
 import random
-# -----------------------------
-# usuario
-nombre = ""
-segundo_nombre = ""
-apellido_p = ""
-apellido_m = ""
-crear_usuario = {}
-clave = ""
-clave_confirmar = True
-clave_confirmada = " "
-# -----------------------------
-# variables generales
-haymasopciones = True
-intentos = 3
-opciones = ""
-resp = ""
-contador = 0
-mes = 0
-opcion = ""
-noesfindejornada = True
-dia = 0
-# -----------------------------
-# variables colaborador
-bar = ""
-clave_bar = ""
-bar_1 = "Tomas"
-bar_2 = "Agustin"
-clave_bar1 = "1234"
-clave_bar2 = "5678"
-horario_1 = {}  # Diccionario para Agustin
-horario_2 = {}  # Diccionario para Tomas
-ver_horario = ""
-mod = ""
-hora = 0
-nueva_hora = 0
-hora_real = 0
-cambio_hora = 0
-# -----------------------------
-# atencion al cliente
-correo = ""
-nombre_mail = ""
-# -----------------------------
-# tipo de pago
-rut = ""
-tipo_pago = 0
-tarjeta = 1
-efectivo = 2
-guardar_boleta = {}
-boleta = 0
-# ----------------------------
-# funciones
 
 def print_horas():
     print("1- 9:00")
@@ -66,7 +15,7 @@ def print_horas():
     print("10- 18:00")
     print("Seleccione su hora (entre 9:00 y 18:00 horas)")
 
-def seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta):
+def seleccionar_tipo_pago(nombre, guardar_boleta, rut):
     while True:
         print("Ingrese tipo de pago: ")
         print("1- Efectivo \n2- Tarjeta")
@@ -74,21 +23,19 @@ def seleccionar_tipo_pago(nombre, boleta, rut, guardar_boleta):
         if tipo_pago == "1":
             print("Si deseas pagar con efectivo, contáctate con nosotros en la opción 5.")
             print("Hasta luego {}".format(nombre))
-            return False
+            return guardar_boleta
         elif tipo_pago == "2":
             print("Perfecto, {}".format(nombre))
             boleta = random.randint(1000,9999)
-            print(boleta)
             print("Su boleta es: {}".format(boleta))
-            guardar_boleta= {
+            guardar_boleta[boleta]= {
                 "nombre": nombre,
                 "boleta": boleta
             }
-            # Guardar información del pago en pagos.txt
             with open("pagos.txt", "a") as f:
                 f.write(f"Rut: {rut} | Nombre: {nombre} | Boleta: {boleta} | Tipo de pago: Tarjeta\n")
             print("¡Gracias por su consulta!")
-            return False
+            return guardar_boleta
         else:
             print("Tipo de pago inválido, intente nuevamente.")
 
@@ -117,10 +64,26 @@ def modificar_horario(horario):
         mostrar_horario(horario)
     else:
         print("La hora que quiere modificar no existe en su horario.")
+    return horario
+def imprimir_agenda_txt():
+    """
+    Imprime en pantalla todas las líneas del archivo agenda.txt,
+    mostrando cada registro en la terminal.
+    """
+    try:
+        with open("agenda.txt", "r") as f:
+            lineas = f.readlines()
+            if not lineas:
+                print("El archivo agenda.txt está vacío.")
+            else:
+                print("Contenido de agenda.txt:")
+                for idx, linea in enumerate(lineas, 1):
+                    print(f"{idx}. {linea.strip()}")
+    except FileNotFoundError:
+        print("El archivo agenda.txt no existe.")
 
-def flujo_colaborador(nombre_colab, clave_colab, horario):
+def flujo_colaborador(nombre_colab, clave_colab, horario, bar):
     intentos = 3
-    global bar  # Asegúrate de que 'bar' está disponible en el scope global
     while True:
         if bar == nombre_colab:
             print("Ingrese la clave: ")
@@ -128,236 +91,250 @@ def flujo_colaborador(nombre_colab, clave_colab, horario):
             if clave_bar == clave_colab:
                 print(f"Bienvenido {nombre_colab}!")
                 print("Tu horario es de 9:00 a 18:00.")
-                print("¿Quieres ver tus horas agendadas? (si/no)")
+                print("¿Quieres ver tus horas agendadas personales, la agenda general, o ambas? (personales/general/ambas)")
                 ver_horario = input().lower()
-                if ver_horario == "si":
+                if ver_horario == "personales":
                     if not horario:
                         print("No tienes horas agendadas.")
                         print("No hay horario para modificar.")
-                        return False
+                        return horario
                     else:
-                        print("Estas son tus horas agendadas:")
+                        print("Estas son tus horas personales agendadas:")
                         mostrar_horario(horario)
-                        # Guardar en agenda.txt
-                        with open("agenda.txt", "a") as f:
-                            for clave, value in horario.items():
-                                mes, dia, hora = clave
-                                f.write(f"Colaborador: {nombre_colab} | Fecha: {dia}-{mes}-2025 | Hora: {hora}:00\n")
-                        print("¿Quieres modificar tu horario? (si/no)")
-                        mod = input().lower()
-                        if mod == "si":
-                            modificar_horario(horario)
-                            # Guardar cambios en agenda.txt después de modificar
-                            with open("agenda.txt", "a") as f:
-                                for clave, value in horario.items():
-                                    mes, dia, hora = clave
-                                    f.write(f"Colaborador: {nombre_colab} | Fecha: {dia}-{mes}-2025 | Hora: {hora}:00\n")
-                            print("Horario actualizado guardado en agenda.txt")
-                            return False
-                        elif mod == "no":
-                            print("No se ha modificado el horario")
-                            return False
-                        else:
-                            print("Opción inválida, no se ha modificado el horario")
-                            return False
+                elif ver_horario == "general":
+                    print("AGENDA GENERAL (agenda.txt):")
+                    imprimir_agenda_txt()
+                elif ver_horario == "ambas":
+                    print("Estas son tus horas personales agendadas:")
+                    mostrar_horario(horario)
+                    print("AGENDA GENERAL (agenda.txt):")
+                    imprimir_agenda_txt()
                 else:
-                    print("Hasta luego!")
-                    return False
+                    print("Opción no válida.")
+                print("¿Quieres modificar tu horario personal? (si/no)")
+                mod = input().lower()
+                if mod == "si":
+                    horario = modificar_horario(horario)
+                    with open("agenda.txt", "a") as f:
+                        for clave, value in horario.items():
+                            mes, dia, hora = clave
+                            f.write(f"Colaborador: {nombre_colab} | Fecha: {dia}-{mes}-2025 | Hora: {hora}:00\n")
+                    print("Horario actualizado guardado en agenda.txt")
+                    return horario
+                else:
+                    print("No se ha modificado el horario")
+                    return horario
             else:
                 intentos -= 1
                 if intentos == 0:
                     print("Se han agotado los intentos, vuelva a intentarlo más tarde")
+                    return horario
                 else:
                     print(f"Le quedan {intentos} intentos")
         else:
             print("Nombre de colaborador incorrecto")
-            return False
+            return horario
+def main():
+    
+    crear_usuario = {}
+    horario_1 = {}
+    horario_2 = {}
+    guardar_boleta = {}
+    atencion_cliente = {}
+    bar_1 = "Tomas"
+    bar_2 = "Agustin"
+    clave_bar1 = "1234"
+    clave_bar2 = "5678"
+    noesfindejornada = True
 
-# -----------------------------
-print("Bienvenido!")
+    if os.path.exists("usuarios.txt"):
+        with open("usuarios.txt") as file:
+            for line in file:
+                if line.strip():
+                    try:
+                        rut, datos = line.strip().split(":", 1)
+                        usuario_dict = ast.literal_eval(datos.strip())
+                        if "num_usuario" not in usuario_dict:
+                            usuario_dict["num_usuario"] = len(crear_usuario) + 1
+                        crear_usuario[rut.strip()] = usuario_dict
+                    except Exception as e:
+                        print("Error al leer usuario en línea: {}\nError específico: {}".format(line.strip(), e))
 
-# Cargar usuarios guardados si existen (cada usuario en una línea, usando ast)
-crear_usuario = {}
-if os.path.exists("usuarios.txt"):
-    with open("usuarios.txt") as file:
-        for line in file:
-            if line.strip():
-                try:
-                    rut, datos = line.strip().split(":", 1)
-                    usuario_dict = ast.literal_eval(datos.strip())
-                    # Asegura que todos tengan 'num_usuario'
-                    if "num_usuario" not in usuario_dict:
-                        usuario_dict["num_usuario"] = len(crear_usuario) + 1
-                    crear_usuario[rut.strip()] = usuario_dict
-                except Exception as e:
-                    print("Error al leer usuario en línea: {}\nError específico: {}".format(line.strip(), e))
+    print("Bienvenido!")
+    while noesfindejornada:
+        print("Ingrese la opcion deseada: ")
+        print("1- Crear cuenta")
+        print("2- Iniciar sesion")
+        print("3- Ingreso de colaboradores o modificar agenda")
+        print("4- Agenda")
+        print("5- Atencion al cliente")
+        print("6- Salir\n")
+        print("Ingrese: ")
+        opcion = input()
 
-while noesfindejornada:
-    print("Ingrese la opcion deseada: ")
-    print("1- Crear cuenta")
-    print("2- Iniciar sesion")
-    print("3- Ingreso de colaboradores")
-    print("4- Agenda")
-    print("5- Atencion al cliente")
-    print("6- Salir\n")
-    print("Ingrese: ")
-    opcion = input()
-
-    if opcion == "1":
-        haymasopciones = True
-        while haymasopciones:
-            print("Ingrese primer nombre del usuario: ")
-            nombre = input()
-            print("Ingrese segundo nombre: ")
-            segundo_nombre = input()
-            print("Ingrese apellido paterno: ")
-            apellido_p = input()
-            print("Ingrese apellido materno: ")
-            apellido_m = input()
-            print("Ingrese clave: ")
-            clave = input()
-            print("Ingrese rut: ")
-            rut = input().strip()           
-            if rut in crear_usuario:
-                print("Ya existe un usuario registrado con ese rut.")
-                haymasopciones = False
-            else:
-                while clave_confirmar:
-                    print("Confirme su clave: ")
-                    clave_confirmada = input()
-                    if clave == clave_confirmada:
-                        print("Clave confirmada")
-                        clave_confirmar = False
-                        crear_usuario[rut] = {
-                            "nombre": nombre,
-                            "segundo_nombre": segundo_nombre,
-                            "apellido_p": apellido_p,
-                            "apellido_m": apellido_m,
-                            "clave": clave,
-                        }
-                        with open("usuarios.txt", "w") as file:
-                            for rut_guardar, datos in crear_usuario.items():
-                                file.write("{}: {}\n".format(rut_guardar, datos))
-                        print("Usuarios guardados en usuarios.txt")
-                        haymasopciones = False
-                    else:
-                        print("Las claves no coinciden, intente nuevamente")
-    elif opcion == "2":
-        haymasopciones = True
-        intentos = 3
-        while haymasopciones:
-            print("Ingrese su rut: ")
-            rut = input().strip()
-            print("Ingrese su clave: ")
-            clave = input()
-            if not crear_usuario:
-                print("No hay usuarios registrados, por favor registrese primero")
-                haymasopciones = False
-            elif rut in crear_usuario and clave == crear_usuario[rut]["clave"]:
-                print("Bienvenido de nuevo!")
-                haymasopciones = False
-            else:
-                print("Usuario o clave incorrecta, intente nuevamente")
-                intentos -= 1
-                if intentos == 0:
-                    print("Se han agotado los intentos, vuelva a intentarlo más tarde")
+        if opcion == "1":
+            haymasopciones = True
+            while haymasopciones:
+                print("Ingrese primer nombre del usuario: ")
+                nombre = input()
+                print("Ingrese segundo nombre: ")
+                segundo_nombre = input()
+                print("Ingrese apellido paterno: ")
+                apellido_p = input()
+                print("Ingrese apellido materno: ")
+                apellido_m = input()
+                print("Ingrese clave: ")
+                clave = input()
+                print("Ingrese rut: ")
+                rut = input().strip()
+                if rut in crear_usuario:
+                    print("Ya existe un usuario registrado con ese rut.")
                     haymasopciones = False
                 else:
-                    print("Le quedan {} intentos".format(intentos))
-    elif opcion == "3":
-        while haymasopciones: 
-            print("Ingreso de colaboradores ({}/{}), si desea volver al menu apriete enter".format(bar_1, bar_2))
-            bar = input()
-            if bar == bar_1:
-                flujo_colaborador(bar_1, clave_bar1, horario_1)
-            elif bar == bar_2:
-                flujo_colaborador(bar_2, clave_bar2, horario_2)
-            else:
-                haymasopciones =False
-
-
-    elif opcion == "4":
-        haymasopciones = True
-        while haymasopciones:
-            if not crear_usuario:
-                print("Debe iniciar sesión primero.")
-                haymasopciones = False
-            print("Ingrese su rut para agendar: ")
-            rut = input().strip()
-            if rut in crear_usuario:
-                print("Bienvenido a la agenda de horarios!\n")
-                print("{}, ¿desea agendar con Tomas o Agustin? (Tomas/Agustin)".format(crear_usuario[rut]['nombre']))
-                bar = input()
-                if bar == "Agustin":
-                    horario = horario_1
-                elif bar == "Tomas":
-                    horario = horario_2
-                else:
-                    print("Colaborador inválido.")
-                    continue
-
-                print("Ingrese el mes en el cual desea agendar (entre 1 y 12): ")
-                mes = int(input())
-                if 1 <= mes <= 12:
-                    if mes == 2:
-                        max_dia = 28
-                    elif mes in [4, 6, 9, 11]:
-                        max_dia = 30
-                    else:
-                        max_dia = 31
-                    print("Ingrese el día (entre 1 y {}): ".format(max_dia))
-                    dia = int(input())
-                    if 1 <= dia <= max_dia:
-                        print_horas()
-                        hora = int(input())
-                        if 1 <= hora <= 10:
-                            hora_real = hora + 8
-                            print("{} su hora agendada es: {}-{}-2025 a las {}:00".format(crear_usuario[rut]['nombre'], dia, mes, hora_real))
-                            clave_horario = (mes, dia, hora_real)
-                            if clave_horario in horario:
-                                print("La hora ya fue agendada, por favor intente nuevamente con otra hora.")
-                            else:
-                                horario[clave_horario] = hora_real
-                                with open("agenda.txt", "a") as f:
-                                    f.write(
-                                        f"Usuario: {crear_usuario[rut]['nombre']} | Rut: {rut} | Colaborador: {bar} | Fecha: {dia}-{mes}-2025 | Hora: {hora_real}:00\n")
-                                print("Ingrese rut para la boleta: ")
-                                rut_boleta = input()
-                                seleccionar_tipo_pago(crear_usuario[rut]['nombre'], boleta, rut_boleta, guardar_boleta)
+                    clave_confirmar = True
+                    while clave_confirmar:
+                        print("Confirme su clave: ")
+                        clave_confirmada = input()
+                        if clave == clave_confirmada:
+                            print("Clave confirmada")
+                            clave_confirmar = False
+                            crear_usuario[rut] = {
+                                "nombre": nombre,
+                                "segundo_nombre": segundo_nombre,
+                                "apellido_p": apellido_p,
+                                "apellido_m": apellido_m,
+                                "clave": clave,
+                            }
+                            with open("usuarios.txt", "w") as file:
+                                for rut_guardar, datos in crear_usuario.items():
+                                    file.write("{}: {}\n".format(rut_guardar, datos))
+                            print("Usuarios guardados en usuarios.txt")
+                            haymasopciones = False
                         else:
-                            print("Hora inválida.")
-                    else:
-                        print("Día inválido.")
+                            print("Las claves no coinciden, intente nuevamente")
+        elif opcion == "2":
+            haymasopciones = True
+            intentos = 3
+            while haymasopciones:
+                print("Ingrese su rut: ")
+                rut = input().strip()
+                print("Ingrese su clave: ")
+                clave = input()
+                if not crear_usuario:
+                    print("No hay usuarios registrados, por favor registrese primero")
+                    haymasopciones = False
+                elif rut in crear_usuario and clave == crear_usuario[rut]["clave"]:
+                    print("Bienvenido de nuevo!")
+                    haymasopciones = False
                 else:
-                    print("Mes inválido.")
-            else:
-                print("Debe iniciar sesión primero: ")
-                haymasopciones = False
+                    print("Usuario o clave incorrecta, intente nuevamente")
+                    intentos -= 1
+                    if intentos == 0:
+                        print("Se han agotado los intentos, vuelva a intentarlo más tarde")
+                        haymasopciones = False
+                    else:
+                        print("Le quedan {} intentos".format(intentos))
+        elif opcion == "3":
+            haymasopciones = True
+            while haymasopciones:
+                print("Ingreso de colaboradores ({}/{}), para leer/modificar agenda escriba 'agenda', para volver al menú presione enter".format(bar_1, bar_2))
+                bar = input()
+                if bar == bar_1:
+                    print(flujo_colaborador(bar_1, clave_bar1, horario_1, bar))
+                elif bar == bar_2:
+                    print(flujo_colaborador(bar_2, clave_bar2, horario_2, bar))
+                else:
+                    haymasopciones = False
+                    
 
-    elif opcion == "5":
-        print("Ingrese su correo:")
-        correo = input()
-        print("Ingrese su nombre:")
-        nombre_mail = input()
-        # Guardar en archivo
-        with open("atencion_cliente.txt", "a") as f:
-            f.write(f"Correo: {correo} | Nombre: {nombre_mail}\n")
-        print("Nos contactaremos muy pronto con usted {}".format(nombre_mail))
-        print("¡Gracias por su consulta!")
+        elif opcion == "4":
+            haymasopciones = True
+            while haymasopciones:
+                if not crear_usuario:
+                    print("Debe iniciar sesión primero.")
+                    haymasopciones = False
+                print("Ingrese su rut para agendar: ")
+                rut = input().strip()
+                if rut in crear_usuario:
+                    print("Bienvenido a la agenda de horarios!\n")
+                    print("{}, ¿desea agendar con Tomas o Agustin? (Tomas/Agustin)".format(crear_usuario[rut]['nombre']))
+                    bar = input()
+                    if bar == "Agustin":
+                        horario = horario_1
+                    elif bar == "Tomas":
+                        horario = horario_2
+                    else:
+                        print("Colaborador inválido.")
+                        continue
 
+                    print("Ingrese el mes en el cual desea agendar (entre 1 y 12): ")
+                    mes = int(input())
+                    if 1 <= mes <= 12:
+                        if mes == 2:
+                            max_dia = 28
+                        elif mes in [4, 6, 9, 11]:
+                            max_dia = 30
+                        else:
+                            max_dia = 31
+                        print("Ingrese el día (entre 1 y {}): ".format(max_dia))
+                        dia = int(input())
+                        if 1 <= dia <= max_dia:
+                            print_horas()
+                            hora = int(input())
+                            if 1 <= hora <= 10:
+                                hora_real = hora + 8
+                                print("{} su hora agendada es: {}-{}-2025 a las {}:00".format(crear_usuario[rut]['nombre'], dia, mes, hora_real))
+                                clave_horario = (mes, dia, hora_real)
+                                if clave_horario in horario:
+                                    print("La hora ya fue agendada, por favor intente nuevamente con otra hora.")
+                                else:
+                                    horario[clave_horario] = hora_real
+                                    with open("agenda.txt", "a") as f:
+                                        f.write(
+                                            f"Usuario: {crear_usuario[rut]['nombre']} | Rut: {rut} | Colaborador: {bar} | Fecha: {dia}-{mes}-2025 | Hora: {hora_real}:00\n")
+                                    print("Ingrese rut para la boleta: ")
+                                    rut_boleta = input()
+                                    guardar_boleta = seleccionar_tipo_pago(crear_usuario[rut]['nombre'], guardar_boleta, rut_boleta)
+                                    if bar == "Agustin":
+                                        horario_1 = horario
+                                    elif bar == "Tomas":
+                                        horario_2 = horario
+                            else:
+                                print("Hora inválida.")
+                        else:
+                            print("Día inválido.")
+                    else:
+                        print("Mes inválido.")
+                else:
+                    print("Debe iniciar sesión primero: ")
+                    haymasopciones = False
 
-    elif opcion == "6":
-        noesfindejornada = False
-        print("Hasta pronto!")
-    else:
-        print("\nOpción inválida, intente nuevamente\n")
+        elif opcion == "5":
+            print("Ingrese su correo:")
+            correo = input()
+            print("Ingrese su nombre:")
+            nombre_mail = input()
+            atencion_cliente[correo] = nombre_mail
+            with open("atencion_cliente.txt", "a") as f:
+                f.write(f"Correo: {correo} | Nombre: {nombre_mail}\n")
+            print("Nos contactaremos muy pronto con usted {}".format(nombre_mail))
+            print("¡Gracias por su consulta!")
 
-print("Las boletas generadas son: ")
-for i in guardar_boleta:
-    print(i)
-print("Las horas agendadas con Agustin son: ")
-for k, v in horario_1.items():
-    print("Mes: {}, Día: {}, Hora: {} → Nueva hora: {}".format(k[0], k[1], k[2], v))
-print("Las horas agendadas con Tomas son: ")
-for k, v in horario_2.items():
-    print("Mes: {}, Día: {}, Hora: {} → Nueva hora: {}".format(k[0], k[1], k[2], v))
+        elif opcion == "6":
+            noesfindejornada = False
+            print("Hasta pronto!")
+        else:
+            print("\nOpción inválida, intente nuevamente\n")
+
+    print("Las boletas generadas son: ")
+    for i in guardar_boleta.values():
+        print(i)
+    print("Las horas agendadas con Agustin son: ")
+    for k, v in horario_1.items():
+        print("Mes: {}, Día: {}, Hora: {} → Nueva hora: {}".format(k[0], k[1], k[2], v))
+    print("Las horas agendadas con Tomas son: ")
+    for k, v in horario_2.items():
+        print("Mes: {}, Día: {}, Hora: {} → Nueva hora: {}".format(k[0], k[1], k[2], v))
+
+if __name__ == "__main__":
+    main()
