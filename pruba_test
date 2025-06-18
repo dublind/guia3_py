@@ -111,6 +111,7 @@ def flujo_colaborador(nombre_colab, clave_colab, horario, bar):
                         for clave, value in horario.items():
                             mes, dia, hora = clave
                             f.write(f"Colaborador: {nombre_colab} | Fecha: {dia}-{mes}-2025 | Hora: {hora}:00\n")
+                            # import libreria time se paracion de texto 
                     print("Horario actualizado guardado en agenda.txt")
                     return horario
                 else:
