@@ -91,24 +91,16 @@ def flujo_colaborador(nombre_colab, clave_colab, horario, bar):
             if clave_bar == clave_colab:
                 print(f"Bienvenido {nombre_colab}!")
                 print("Tu horario es de 9:00 a 18:00.")
-                print("¿Quieres ver tus horas agendadas personales, la agenda general, o ambas? (personales/general/ambas)")
+                print("¿Quieres ver tus horas agendadas, ingresa si/no ")
                 ver_horario = input().lower()
-                if ver_horario == "personales":
-                    if not horario:
-                        print("No tienes horas agendadas.")
-                        print("No hay horario para modificar.")
-                        return horario
-                    else:
-                        print("Estas son tus horas personales agendadas:")
-                        mostrar_horario(horario)
-                elif ver_horario == "general":
-                    print("AGENDA GENERAL (agenda.txt):")
-                    imprimir_agenda_txt()
-                elif ver_horario == "ambas":
+                if ver_horario == "si":
                     print("Estas son tus horas personales agendadas:")
                     mostrar_horario(horario)
-                    print("AGENDA GENERAL (agenda.txt):")
+                    print("(agenda.txt):")
                     imprimir_agenda_txt()
+                elif ver_horario == 'no':
+                    print("Hasta pronto!")
+                    return False
                 else:
                     print("Opción no válida.")
                 print("¿Quieres modificar tu horario personal? (si/no)")
@@ -135,7 +127,6 @@ def flujo_colaborador(nombre_colab, clave_colab, horario, bar):
             print("Nombre de colaborador incorrecto")
             return horario
 def main():
-    
     crear_usuario = {}
     horario_1 = {}
     horario_2 = {}
@@ -244,8 +235,7 @@ def main():
                 elif bar == bar_2:
                     print(flujo_colaborador(bar_2, clave_bar2, horario_2, bar))
                 else:
-                    haymasopciones = False
-                    
+                    haymasopciones = False                   
 
         elif opcion == "4":
             haymasopciones = True
